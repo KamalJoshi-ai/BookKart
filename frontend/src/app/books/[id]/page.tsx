@@ -2,14 +2,13 @@ import { notFound } from "next/navigation";
 import BookDetailsClient from "./BookDetailsClient";
 
 async function getBook(id: string) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/products/${id}`,
-      {
-        cache: "no-store",
-      },
-    );
-
+ try {
+  const res = await fetch(
+    `https://bookstore-backend-5k3s.onrender.com/api/products/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
     if (!res.ok) {
       return null;
     }
@@ -23,7 +22,8 @@ async function getBook(id: string) {
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
-  const data = await getBook(id);
+const data = await getBook(id);
+
 
   if (!data?.data) {
     notFound();
