@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BASE_URL: string =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://your-backend.onrender.com/api";
+  "https://bookstore-backend-5k3s.onrender.com/api";
 
 export const API_URLS = {
   REGISTER: "/auth/register",
