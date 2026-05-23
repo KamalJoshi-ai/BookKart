@@ -152,46 +152,63 @@ export default function OrdersPage() {
                     <p className="text-sm font-semibold text-gray-600 mb-2">
                       Books Ordered:
                     </p>
-                    <div className="space-y-3">
-                      {order.items.map((item: any) => {
-                        const itemStatus =
-                          statusConfig[item.status] ?? statusConfig.pending;
-                        const ItemStatusIcon = itemStatus.icon;
-                        return (
-                          <div
-                            key={item._id}
-                            className="flex items-center gap-4 bg-white p-3 rounded-lg border"
-                          >
-                            {item.product?.images?.[0] && (
-                              <img
-                                src={item.product.images[0]}
-                                alt={item.product.title}
-                                className="w-14 h-14 object-cover rounded-md"
-                              />
-                            )}
-                            <div className="flex-1">
-                              <p className="font-semibold text-gray-800">
-                                {item.product?.title ?? "Book"}
-                              </p>
-                              <p className="text-sm text-gray-500">
-                                {item.product?.author} •{" "}
-                                {item.product?.condition}
-                              </p>
-                            </div>
-                            {/* Item ka status badge */}
-                            <span
-                              className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${itemStatus.color}`}
-                            >
-                              <ItemStatusIcon className="w-3 h-3" />
-                              {itemStatus.label}
-                            </span>
-                            <p className="font-bold text-gray-800">
-                              ₹{item.price}
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
+                   <div className="space-y-3">
+  {order.items.map((item: any) => {
+    const itemStatus =
+      statusConfig[item.status] ?? statusConfig.pending;
+
+    const ItemStatusIcon = itemStatus.icon;
+
+    return (
+      <div
+        key={item._id}
+        className="flex items-center gap-4 bg-white p-3 rounded-lg border"
+      >
+        {item.product?.images?.[0] && (
+          <img
+            src={item.product.images[0]}
+            alt={item.product.title}
+            className="w-14 h-14 object-cover rounded-md"
+          />
+        )}
+
+        <div className="flex-1">
+          <p className="font-semibold text-gray-800">
+            {item.product?.title ?? "Book"}
+          </p>
+
+          <p className="text-sm text-gray-500">
+            {item.product?.author} •{" "}
+            {item.product?.condition}
+          </p>
+
+          {/* Quantity */}
+          <p className="text-sm text-gray-600 mt-1">
+            Quantity: {item.quantity}
+          </p>
+        </div>
+
+        {/* Status Badge */}
+        <span
+          className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${itemStatus.color}`}
+        >
+          <ItemStatusIcon className="w-3 h-3" />
+          {itemStatus.label}
+        </span>
+
+        <div className="text-right">
+          <p className="font-bold text-gray-800">
+            ₹{item.price}
+          </p>
+
+          <p className="text-xs text-gray-500">
+            Total: ₹{item.price * item.quantity}
+          </p>
+        </div>
+      </div>
+    );
+  })}
+</div>
                   </div>
 
                   {/* Tracking Info */}

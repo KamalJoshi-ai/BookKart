@@ -80,7 +80,7 @@ const Page = () => {
   const {
   data: cartData,
   isLoading: isCartLoading,
-} = useGetCartQuery(user._id, {
+} = useGetCartQuery(user?._id, {
   skip: !user?._id,
 });
   const [removeCartMutation] = useRemoveFromCartMutation();
@@ -249,7 +249,10 @@ const Page = () => {
 
       // Step 5 - Open Razorpay modal
       const razorpay = new window.Razorpay(options);
-
+if (!window.Razorpay) {
+  toast.error("Razorpay SDK failed to load");
+  return;
+}
       // Step 6 - Handle payment failure
       razorpay.on("payment.failed", (response: any) => {
         toast.error(`Payment failed: ${response.error.description}`);
