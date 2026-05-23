@@ -1,43 +1,82 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const BASE_URL: string =process.env.NEXT_PUBLIC_API_URL || "https://your-backend.onrender.com/api/";
 
-const API_URLS = {
-  REGISTER: `${BASE_URL}/auth/register`,
-  LOGIN: `${BASE_URL}/auth/login`,
-  VERIFY_EMAIL: (token: string) => `${BASE_URL}/auth/verify-email/${token}`,
-  FORGOT_PASSWORD: `${BASE_URL}/auth/forgot-password`,
-  RESET_PASSWORD: (token: string) => `${BASE_URL}/auth/reset-password/${token}`,
-  VERIFY_AUTH: `${BASE_URL}/auth/verify-auth`,
-  LOGOUT: `${BASE_URL}/auth/logout`,
-  UPDATE_USER_PROFILE:(userId: string) => `${BASE_URL}/user/profile/update/${userId}`,
-  ALLPRODUCTS: `${BASE_URL}/products/`,
-  PRODUCTS: `${BASE_URL}/products/create`,
-  PRODUCT_BY_ID: (id: string) => `${BASE_URL}/products/${id}`,
-  GET_PRODUCT_BY_SELLER_ID: (sellerId: string) => `${BASE_URL}/products/seller/${sellerId}`,
-  DELETE_PRODUCT_BY_SELLER_ID: (productId: string) => `${BASE_URL}/products/seller/${productId}`,
-  CART: (userId: string) => `${BASE_URL}/cart/${userId}`,
-  ADD_TO_CART: `${BASE_URL}/cart/add`,
-  REMOVE_FROM_CART: (productId: string) => `${BASE_URL}/cart/remove/${productId}`,
-  WISHLIST: `${BASE_URL}/wishlist/`,
-  ADD_TO_WISHLIST: `${BASE_URL}/wishlist/add`,
-  REMOVE_FROM_WISHLIST: (productId: string) => `${BASE_URL}/wishlist/remove/${productId}`,
-  ORDERS: `${BASE_URL}/order`,
-  ORDER_BY_ID: (orderId: string) => `${BASE_URL}/order/${orderId}`,
-  CREATE_RAZORPAY_PAYMENT: `${BASE_URL}/order/payment-razorpay`,
-  GET_ADDRESS: `${BASE_URL}/address`,
-  ADD_OR_UPDATE_ADDRESS: `${BASE_URL}/address/create-or-update`,
-  UPDATE_PRODUCT: (productId: string) => `${BASE_URL}/products/update/${productId}`,
-  SELLER_STATS: `${BASE_URL}/seller/stats`,
-  SELLER_ORDERS: `${BASE_URL}/seller/orders`,
-  SELLER_LISTINGS: `${BASE_URL}/seller/listings`,
-  SELLER_UPDATE_ORDER_STATUS: (orderId: string) => `${BASE_URL}/seller/orders/${orderId}/status`,
-BECOME_SELLER: `${BASE_URL}/user/become-seller`,
+const BASE_URL: string =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://your-backend.onrender.com/api";
 
+export const API_URLS = {
+  REGISTER: "/auth/register",
+  LOGIN: "/auth/login",
+  VERIFY_EMAIL: (token: string) =>
+    `/auth/verify-email/${token}`,
+  FORGOT_PASSWORD: "/auth/forgot-password",
+  RESET_PASSWORD: (token: string) =>
+    `/auth/reset-password/${token}`,
+  VERIFY_AUTH: "/auth/verify-auth",
+  LOGOUT: "/auth/logout",
+
+  UPDATE_USER_PROFILE: (userId: string) =>
+    `/user/profile/update/${userId}`,
+
+  ALLPRODUCTS: "/products",
+  PRODUCTS: "/products/create",
+
+  PRODUCT_BY_ID: (id: string) =>
+    `/products/${id}`,
+
+  GET_PRODUCT_BY_SELLER_ID: (sellerId: string) =>
+    `/products/seller/${sellerId}`,
+
+  DELETE_PRODUCT_BY_SELLER_ID: (productId: string) =>
+    `/products/seller/${productId}`,
+
+  CART: (userId: string) =>
+    `/cart/${userId}`,
+
+  ADD_TO_CART: "/cart/add",
+
+  REMOVE_FROM_CART: (productId: string) =>
+    `/cart/remove/${productId}`,
+
+  WISHLIST: "/wishlist",
+
+  ADD_TO_WISHLIST: "/wishlist/add",
+
+  REMOVE_FROM_WISHLIST: (productId: string) =>
+    `/wishlist/remove/${productId}`,
+
+  ORDERS: "/order",
+
+  ORDER_BY_ID: (orderId: string) =>
+    `/order/${orderId}`,
+
+  CREATE_RAZORPAY_PAYMENT:
+    "/order/payment-razorpay",
+
+  GET_ADDRESS: "/address",
+
+  ADD_OR_UPDATE_ADDRESS:
+    "/address/create-or-update",
+
+  UPDATE_PRODUCT: (productId: string) =>
+    `/products/update/${productId}`,
+
+  SELLER_STATS: "/seller/stats",
+
+  SELLER_ORDERS: "/seller/orders",
+
+  SELLER_LISTINGS: "/seller/listings",
+
+  SELLER_UPDATE_ORDER_STATUS: (
+    orderId: string
+  ) => `/seller/orders/${orderId}/status`,
+
+  BECOME_SELLER: "/user/become-seller",
 };
 
 const baseQuery = fetchBaseQuery({
-  baseUrl:BASE_URL,
-  credentials: "include", // cookies send karega
+  baseUrl: BASE_URL,
+  credentials: "include",
 });
 const baseQueryWithReauth = async (
   args: any,
