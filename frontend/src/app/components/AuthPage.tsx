@@ -95,7 +95,7 @@ export default function AuthPage({ isLoginOpen, setIsLoginOpen }: LoginProps) {
   try {
        toast.success("Redirecting to Google login...");
 
-    window.location.href = "http://localhost:8000/api/auth/google";
+    window.location.href = "https://bookstore-backend-5k3s.onrender.com";
    
       // dispatch(authStatus());
   } catch (error) {

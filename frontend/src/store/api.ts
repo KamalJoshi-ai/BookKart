@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { useRouter } from "next/navigation"
-const BASE_URL: string =process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const BASE_URL: string =process.env.NEXT_PUBLIC_API_URL || "https://your-backend.onrender.com/api/";
 
 const API_URLS = {
   REGISTER: `${BASE_URL}/auth/register`,
@@ -37,7 +37,7 @@ BECOME_SELLER: `${BASE_URL}/user/become-seller`,
 };
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8000/api",
+  baseUrl: "https://your-backend.onrender.com/api/",
   credentials: "include", // cookies send karega
 });
 const baseQueryWithReauth = async (
