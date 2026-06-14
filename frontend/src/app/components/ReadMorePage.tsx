@@ -1,7 +1,7 @@
 "use client";
 import { ArrowLeft, Clock, BookOpen, Share2, Bookmark, Tag, } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -117,10 +117,13 @@ interface ReadMorePageProps {
 }
 
 export default function ReadMorePage({ articleId = 1, onBack }: ReadMorePageProps) {
+
   const article = articles.find((a) => a.id === articleId) || articles[0];
   const otherArticles = articles.filter((a) => a.id !== article.id);
   const [bookmarked, setBookmarked] = useState(false);
-
+   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <main className="min-h-screen bg-[rgb(221,234,254)]">
 
