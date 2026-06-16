@@ -114,16 +114,18 @@ const articles = [
 interface ReadMorePageProps {
   articleId?: number;
   onBack?: () => void;
+  selectArticle:(id:number)=>void
 }
 
-export default function ReadMorePage({ articleId = 1, onBack }: ReadMorePageProps) {
-
+export default function ReadMorePage({ articleId , onBack,selectArticle }: ReadMorePageProps) {
+ 
   const article = articles.find((a) => a.id === articleId) || articles[0];
   const otherArticles = articles.filter((a) => a.id !== article.id);
   const [bookmarked, setBookmarked] = useState(false);
    useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+ 
   return (
     <main className="min-h-screen bg-[rgb(221,234,254)]">
 
@@ -263,6 +265,14 @@ export default function ReadMorePage({ articleId = 1, onBack }: ReadMorePageProp
             {otherArticles.map((a) => (
               <div
                 key={a.id}
+               onClick={() => {
+  selectArticle?.(a.id);
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}}
                 className="bg-white rounded-2xl overflow-hidden shadow-md border border-blue-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
               >
                 <div className="relative h-40 w-full">

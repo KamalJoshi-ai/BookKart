@@ -1,193 +1,66 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  BookOpen,
-  Camera,
-  CreditCard,
-  Library,
-  Search,
-  ShoppingBag,
-  Store,
-  Tag,
-  Truck,
-  Wallet,
-} from "lucide-react";
-import Image from "next/image";
+// app/page.tsx (or your Home file)
 import Link from "next/link";
-import { useState } from "react";
-import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Camera, Tag, Wallet, Search, CreditCard, Truck } from "lucide-react";
 import NewBooks from "./components/NewBooks";
-import { Card, CardContent } from "@/components/ui/card";
-import ReadMorePage from "./components/ReadMorePage"; 
-const blogPosts = [
-    {
-      id: 1,
-      imageSrc:
-        "https://images.unsplash.com/photo-1604866830893-c13cafa515d5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8b25saW5lJTIwc2VsbCUyMGJvb2tzfGVufDB8fDB8fHww",
-      title: "Where and how to sell old books online?",
-      description:
-        "Get started with selling your used books online and earn money from your old books.",
-      icon: <BookOpen className="w-6 h-6 text-primary" />,
-    },
-    {
-      id: 2,
-      imageSrc:
-        "https://cdn.pixabay.com/photo/2019/09/19/12/43/portrait-4489207_1280.jpg",
-      title: "What to do with old books?",
-      description:
-        "Learn about different ways to make use of your old books and get value from them.",
-      icon: <Library className="w-6 h-6 text-primary" />,
-    },
-    {
-      id: 3,
-      imageSrc:
-        "https://images.unsplash.com/photo-1492539438225-2666b2a98f93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG9sZCUyMCUyMGJvb2tzfGVufDB8fDB8fHww",
-      title: "What is BookKart?",
-      description:
-        "Discover how BookKart helps you buy and sell used books online easily.",
-      icon: <Store className="w-6 h-6 text-primary" />,
-    },
-  ];
+import HeroBanner from "./components/HeroBanner";
+import BlogSection from "./components/Blog";
+import { Suspense } from "react";
+import Loader from './loading'
+const sellSteps = [
+  {
+    step: "Step 1",
+    title: "Post an ad for selling used books",
+    description: "Post an ad on BookKart describing your book details to sell your old books online.",
+    icon: <Camera className="h-8 w-8 text-primary" />,
+  },
+  {
+    step: "Step 2",
+    title: "Set the selling price for your books",
+    description: "Set the price for your books at which you want to sell them.",
+    icon: <Tag className="h-8 w-8 text-primary" />,
+  },
+  {
+    step: "Step 3",
+    title: "Get paid into your UPI/Bank account",
+    description: "You will get money into your account once you receive an order for your book.",
+    icon: <Wallet className="h-8 w-8 text-primary" />,
+  },
+];
 
-  const sellSteps = [
-    {
-      step: "Step 1",
-      title: "Post an ad for selling used books",
-      description:
-        "Post an ad on BookKart describing your book details to sell your old books online.",
-      icon: <Camera className="h-8 w-8 text-primary" />,
-    },
-    {
-      step: "Step 2",
-      title: "Set the selling price for your books",
-      description:
-        "Set the price for your books at which you want to sell them.",
-      icon: <Tag className="h-8 w-8 text-primary" />,
-    },
-    {
-      step: "Step 3",
-      title: "Get paid into your UPI/Bank account",
-      description:
-        "You will get money into your account once you receive an order for your book.",
-      icon: <Wallet className="h-8 w-8 text-primary" />,
-    },
-  ];
-
-  const buySteps = [
-    {
-      step: "Step 1",
-      title: "Select the used books you want",
-      description:
-        "Search from over thousands of used books listed on BookKart.",
-      icon: <Search className="h-8 w-8 text-primary" />,
-    },
-    {
-      step: "Step 2",
-      title: "Place the order by making payment",
-      description:
-        "Then simply place the order by clicking on the 'Buy Now' button.",
-      icon: <CreditCard className="h-8 w-8 text-primary" />,
-    },
-    {
-      step: "Step 3",
-      title: "Get the books delivered at your doorstep",
-      description: "The books will be delivered to you at your doorstep!",
-      icon: <Truck className="h-8 w-8 text-primary" />,
-    },
-  ];
-   const bannerImages = [
-    "/images/book1.jpg",
-    "/images/book2.jpg",
-    "/images/book3.jpg",
-  ];
+const buySteps = [
+  {
+    step: "Step 1",
+    title: "Select the used books you want",
+    description: "Search from over thousands of used books listed on BookKart.",
+    icon: <Search className="h-8 w-8 text-primary" />,
+  },
+  {
+    step: "Step 2",
+    title: "Place the order by making payment",
+    description: "Then simply place the order by clicking on the 'Buy Now' button.",
+    icon: <CreditCard className="h-8 w-8 text-primary" />,
+  },
+  {
+    step: "Step 3",
+    title: "Get the books delivered at your doorstep",
+    description: "The books will be delivered to you at your doorstep!",
+    icon: <Truck className="h-8 w-8 text-primary" />,
+  },
+];
+export const revalidate = 180;
+// export const dynamic = "force-static";
 
 export default function Home() {
-  const [currentImage, setCurrentImage] = useState(0);
-  const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % bannerImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Show Read More page when an article is selected
-  if (selectedArticle !== null) {
-    return (
-      <ReadMorePage
-        articleId={selectedArticle}
-        onBack={() => setSelectedArticle(null)}
-      />
-    );
-  }
-
   return (
     <main className="min-h-screen">
-      {/* Banner */}
-      <section className="relative h-[700px] overflow-hidden">
-        {bannerImages.map((src, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentImage ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Image
-              src={src}
-              alt={`Banner Image ${index + 1}`}
-              layout="fill"
-              objectFit="cover"
-            />
-            <div className="absolute inset-0 bg-black/60" />
-            
-          </div>
+      {/* Interactive Client Hero Banner */}
+      <HeroBanner />
 
-        ))}
-        <div className="relative container mx-auto h-full flex flex-col items-center justify-center text-white text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-8 z-10">
-            Buy and Sell Old Books Online in India
-          </h1>
-          <div className="flex flex-col sm:flex-row gap-6">
-            <Button
-              size="lg"
-              className="group bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-6 rounded-lg"
-            >
-              <div className="flex items-center gap-3">
-                <div className="bg-white/20 p-2 rounded-lg group-hover:bg-white/30 transition-colors">
-                  <ShoppingBag className="h-6 w-6" />
-                </div>
-                <Link href="/books">
-                  <div className="text-left">
-                    <div className="text-sm opacity-90">Start Shopping</div>
-                    <div className="font-semibold">Buy used Books</div>
-                  </div>
-                </Link>
-              </div>
-            </Button>
-
-            <Button
-              size="lg"
-              className="group bg-linear-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-800 text-black px-8 py-6 rounded-lg"
-            >
-              <div className="flex items-center gap-3">
-                <div className="bg-black/20 p-2 rounded-lg group-hover:bg-black/30 transition-colors">
-                  <ShoppingBag className="h-6 w-6" />
-                </div>
-                <Link href="/book-sell">
-                  <div className="text-left">
-                    <div className="text-sm opacity-90">Start Selling</div>
-                    <div className="font-semibold">Sell Old Books</div>
-                  </div>
-                </Link>
-              </div>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <NewBooks />
+      {/* Server Rendered Content / Dynamic Components */}
+     <Suspense fallback={<Loader/>}>
+        <NewBooks />
+      </Suspense>
 
       <Button
         size="lg"
@@ -215,7 +88,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8 relative">
             <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-0.5 border-t-2 border-dashed border-gray-900 " />
             {sellSteps.map((step, index) => (
-              <div key={index} className="relative flex flex-col h-full shadow-2xl  rounded-xl ">
+              <div key={index} className="relative flex flex-col h-full shadow-2xl rounded-xl ">
                 <div className="bg-white rounded-xl p-18 shadow-lg text-center grow flex flex-col">
                   <div className="absolute top-5 left-14 -translate-x-1/2 bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-medium">
                     {step.step}
@@ -265,60 +138,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Blog Posts */}
-      <section className="py-20 bg-[rgb(221,234,254)]">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-extrabold text-center mb-14 tracking-tight text-gray-900">
-            Read from our <span className="text-primary">BLOG</span>
-          </h2>
-
-          <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10">
-            {blogPosts.map((post, index) => (
-              <Card
-                key={index}
-                className="group h-full flex flex-col overflow-hidden bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-2 p-0"
-              >
-                <CardContent className="p-0 flex flex-col h-full">
-                  {/* Image */}
-                  <div className="relative h-56 overflow-hidden">
-                    <Image
-                      src={post.imageSrc}
-                      alt={post.title}
-                      layout="fill"
-                      objectFit="cover"
-                      className="transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6 flex flex-col grow">
-                    <h3 className="text-xl font-semibold mb-3 flex items-center gap-3 text-gray-800">
-                      <div className="bg-primary/10 p-3 rounded-full text-primary">
-                        {post.icon}
-                      </div>
-                      <span className="grow">{post.title}</span>
-                    </h3>
-
-                    <p className="text-gray-600 text-sm grow leading-relaxed">
-                      {post.description}
-                    </p>
-
-                    <Button
-                      variant="link"
-                      onClick={() => setSelectedArticle(post.id)}
-                      className="mt-6 mx-auto cursor-pointer self-start text-primary font-medium hover:text-primary/80 flex items-center transition-colors duration-200"
-                    >
-                      Read More
-                      <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Interactive Client Blog Section */}
+      <BlogSection />
     </main>
   );
 }

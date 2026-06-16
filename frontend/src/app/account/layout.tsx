@@ -137,7 +137,8 @@ export default function AccountLayout({
   };
 
 
-    if (!user) {
+   
+if (!user) {
     return (
       <NoData
         message="Please login to access your account."

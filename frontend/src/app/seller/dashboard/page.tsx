@@ -49,7 +49,7 @@ const orderStatCards = [
 export default function SellerDashboard() {
   const { data, isLoading, isError } = useGetSellerStatsQuery();
   const stats = data?.data;
-console.log(stats)
+
   if (isLoading) {
     return  <InfiniteSkeleton/>
     

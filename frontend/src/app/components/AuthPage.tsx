@@ -10,7 +10,6 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import  Image  from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import toast from "react-hot-toast";
 
 import {
@@ -46,9 +45,19 @@ export default function AuthPage({ isLoginOpen, setIsLoginOpen }: LoginProps) {
   const [login, { isLoading: isLogingLoading }] = useLoginMutation();
   const [forgotPassword, { isLoading: isForgotPasswdLoading }] = useForgotPasswordMutation();
 
-  const loginForm = useForm({ resolver: yupResolver(loginSchema) });
-  const signupForm = useForm({ resolver: yupResolver(signupSchema) });
-  const forgotForm = useForm({ resolver: yupResolver(forgotSchema) });
+  const loginForm = useForm({ resolver: yupResolver(loginSchema) ,defaultValues: {
+    email: "",
+    password: ""
+  } });
+  const signupForm = useForm({ resolver: yupResolver(signupSchema) ,defaultValues: {
+    name: "",
+    email: "",
+    password: "",
+    isSeller: false
+  }});
+  const forgotForm = useForm({ resolver: yupResolver(forgotSchema),defaultValues: {
+    email: ""
+  } });
 
   // ----------------------------
   // SIGNUP SUBMIT
@@ -63,6 +72,7 @@ export default function AuthPage({ isLoginOpen, setIsLoginOpen }: LoginProps) {
       signupForm.reset();
       }
     } catch (err: any) {
+console.log("FULL ERROR", err);
       toast.error(err?.data?.message || "Something went wrong");
     }
   };
@@ -86,6 +96,7 @@ export default function AuthPage({ isLoginOpen, setIsLoginOpen }: LoginProps) {
         
       }
     } catch (err: any) {
+      console.log(err?.data)
       toast.error(err?.data?.message || "Invalid credentials");
       
     }

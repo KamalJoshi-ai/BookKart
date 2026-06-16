@@ -34,7 +34,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import AuthPage from "@/app/components/AuthPage";
 const profileSchema = yup.object().shape({
   name: yup
     .string()
