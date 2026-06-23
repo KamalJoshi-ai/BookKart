@@ -1,12 +1,14 @@
 // app/page.tsx (or your Home file)
+"use client"
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Camera, Tag, Wallet, Search, CreditCard, Truck } from "lucide-react";
 import NewBooks from "./components/NewBooks";
 import HeroBanner from "./components/HeroBanner";
 import BlogSection from "./components/Blog";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import Loader from './loading'
+import ReadMorePage from "./components/ReadMorePage";
 const sellSteps = [
   {
     step: "Step 1",
@@ -48,10 +50,21 @@ const buySteps = [
     icon: <Truck className="h-8 w-8 text-primary" />,
   },
 ];
-export const revalidate = 180;
-// export const dynamic = "force-static";
+// export const revalidate = 180;
+// // export const dynamic = "force-static";
 
 export default function Home() {
+    const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
+  
+  if (selectedArticle !== null) {
+  return (
+    <ReadMorePage
+      articleId={selectedArticle}
+      onBack={() => setSelectedArticle(null)}
+      selectArticle={setSelectedArticle}
+    />
+  );
+}
   return (
     <main className="min-h-screen">
       {/* Interactive Client Hero Banner */}
@@ -139,7 +152,7 @@ export default function Home() {
       </section>
 
       {/* Interactive Client Blog Section */}
-      <BlogSection />
+      <BlogSection   onSelectArticle={setSelectedArticle} />
     </main>
   );
 }

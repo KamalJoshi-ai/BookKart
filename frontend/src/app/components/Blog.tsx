@@ -32,18 +32,12 @@ const blogPosts = [
   },
 ];
 
-export default function BlogSection() {
-  const [selectedArticle, setSelectedArticle] = useState<number | null>(null);
-
-  if (selectedArticle !== null) {
-    return (
-      <ReadMorePage
-        articleId={selectedArticle}
-        onBack={() => setSelectedArticle(null)}
-        selectArticle={setSelectedArticle}
-      />
-    );
-  }
+export default function BlogSection({
+  onSelectArticle,
+}: {
+  onSelectArticle: (id: number) => void;
+}) {
+  
 
   return (
     <section className="py-20 bg-[rgb(221,234,254)]">
@@ -84,7 +78,7 @@ export default function BlogSection() {
 
                   <Button
                     variant="link"
-                    onClick={() => setSelectedArticle(post.id)}
+                    onClick={() =>onSelectArticle(post.id)}
                     className="mt-6 mx-auto cursor-pointer self-start text-primary font-medium hover:text-primary/80 flex items-center transition-colors duration-200"
                   >
                     Read More
