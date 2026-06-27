@@ -219,7 +219,7 @@ const Header = () => {
         <div className="relative w-[40%]">
           <Input
             placeholder="Search books, authors, or subjects..."
-            className="pr-10 text-gray-700 border-gray-300"
+            className="pr-10  text-gray-700 border-gray-300"
            ref={searchRef}
               onKeyDown={(e) => {
               if (e.key === "Enter") {
