@@ -250,7 +250,6 @@ export const api = createApi({
 
     params.append("sort", sort);
 
-    console.log(params.toString());
 
     return {
 

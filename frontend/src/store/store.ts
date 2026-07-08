@@ -45,7 +45,7 @@ const persistedCheckoutReducer = persistReducer(checkoutPersistConfig,checkoutRe
 // --- store setup ---
 export const store = configureStore({
   reducer: {
-    [api.reducerPath]: api.reducer,
+    [api.reducerPath]: api.reducer,//No persist Reducer wrapper
     user: persistedUserReducer,
   cart: persistedCartReducer,
     wishlist: persistedWishlistReducer,
@@ -59,7 +59,7 @@ export const store = configureStore({
     }).concat(api.middleware),
 });
 
-// --- for RTK Query auto refetch ---
+// --- for RTK Query auto refetchonfocus,refetchOnReconnect ---
 setupListeners(store.dispatch);
 
 // --- persist store ---

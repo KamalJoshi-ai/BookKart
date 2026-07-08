@@ -70,11 +70,11 @@ const BookDetailsClient = ({ product }: Props) => {
         toast.success(result.message || "Added to cart successfully");
       } 
       else {
-        throw new Error(result.message || "Failed to add to cart");
+        throw new Error(result.message || "Login first");
       }
     } catch (error: any) {
       console.log(error)
-      toast.error(error?.message || "Failed to add to cart");
+      toast.error(error?.message || "login First");
     }
   };
 
