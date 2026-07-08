@@ -58,7 +58,6 @@ export default function SellBookPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit");
-  console.log(editId)
   const isEditMode = !!editId;
 const [updateProduct] = useUpdateProductMutation();
   const user = useSelector((state: RootState) => state.user.user);

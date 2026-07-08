@@ -15,7 +15,6 @@ export default function SellerEarningsPage() {
 
   const stats = statsData?.data;
   const orders = ordersData?.data?.orders ?? [];
-console.log(orders)
   // Sirf delivered orders — confirmed earnings
   const deliveredOrders = orders.filter((o: any) => o.status === "delivered");
 if (statsLoading || ordersLoading) {

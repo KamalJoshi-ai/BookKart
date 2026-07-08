@@ -52,12 +52,10 @@ const HandlePayment: React.FC<HandlePaymentProps> = ({ orderData, orderId }) => 
     setPaymentError(null)
 
     try {
-      console.log("Payment data:", orderData)
 
       // Step 1: Create Razorpay order
       const response = await createRazorpayPayment(orderId).unwrap()
 
-      console.log("Razorpay response:", response)
 
       if (!response?.success || !response?.data?.order) {
         throw new Error("Failed to create razorpay order")
@@ -74,7 +72,6 @@ const HandlePayment: React.FC<HandlePaymentProps> = ({ orderData, orderId }) => 
         order_id: razorpayOrder.id,
         handler: async function (razorpayResponse: any) {
           try {
-            console.log("Payment successful, updating order...")
             
             // Step 2: Verify payment and update order
             const result = await createOrUpdateOrder({
@@ -89,7 +86,6 @@ const HandlePayment: React.FC<HandlePaymentProps> = ({ orderData, orderId }) => 
             }).unwrap()
 
             if (result.success) {
-              console.log("Order updated successfully")
               dispatch(clearCart())
               dispatch(resetCheckout())
               toast.success("Payment successful!")
@@ -105,14 +101,12 @@ const HandlePayment: React.FC<HandlePaymentProps> = ({ orderData, orderId }) => 
         },
         modal: {
           ondismiss: function () {
-            console.log(" Payment modal closed by user")
             toast.error("Payment cancelled")
             setIsProcessing(false)
           }
         }
       }
 
-      console.log("🔄 Opening Razorpay modal...")
       const razorpay = new (window as any).Razorpay(options)
       razorpay.open()
     } catch (error: any) {

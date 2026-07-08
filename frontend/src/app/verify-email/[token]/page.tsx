@@ -29,7 +29,6 @@ const dispatch = useDispatch();
     try {
      
   const res=  await verifyEmail(token).unwrap();
-  console.log(res)
       toast.success("Email verified successfully!");
       dispatch(setEmailVerified(true))
        if (res.data.user.role === "seller") {

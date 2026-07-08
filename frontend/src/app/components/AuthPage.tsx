@@ -72,7 +72,6 @@ export default function AuthPage({ isLoginOpen, setIsLoginOpen }: LoginProps) {
       signupForm.reset();
       }
     } catch (err: any) {
-console.log("FULL ERROR", err);
       toast.error(err?.data?.message || "Something went wrong");
     }
   };
@@ -85,7 +84,6 @@ console.log("FULL ERROR", err);
       const res = await login(data).unwrap();
       if (res.success) {
         toast.success("Logged in successfully!");
-        console.log(res)
         dispatch(toggleLoginDialog());
         dispatch(authStatus());
           if (res.data.user.role === "seller") {
@@ -96,7 +94,6 @@ console.log("FULL ERROR", err);
         
       }
     } catch (err: any) {
-      console.log(err?.data)
       toast.error(err?.data?.message || "Invalid credentials");
       
     }

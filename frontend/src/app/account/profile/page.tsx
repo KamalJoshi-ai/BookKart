@@ -114,7 +114,6 @@ export default function Page() {
         throw new Error("Could not update profile");
       }
     } catch (error) {
-      console.log(error);
       toast.error("Failed to update profile");
     }
   };

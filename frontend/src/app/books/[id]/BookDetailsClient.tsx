@@ -66,15 +66,15 @@ const BookDetailsClient = ({ product }: Props) => {
 
       if (result.success && result.data) {
         dispatch(addToCart(result.data));
-
         toast.success(result.message || "Added to cart successfully");
       } 
       else {
+        console.log(result?.message)
         throw new Error(result.message || "Login first");
       }
     } catch (error: any) {
-      console.log(error)
-      toast.error(error?.message || "login First");
+     
+      toast.error(error?.data?.message);
     }
   };
 
@@ -124,7 +124,6 @@ const BookDetailsClient = ({ product }: Props) => {
           url: window.location.href,
         });
       } catch {
-        console.log("Share cancelled");
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
