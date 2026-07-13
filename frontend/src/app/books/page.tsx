@@ -34,10 +34,10 @@ const Page = () => {
   const [sortOption, setSortOption] = useState("newest");
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
-  const bookPerPage = 1;
-const { data, isLoading,isFetching } = useGetProductsQuery({
-  page: currentPage,
-  limit: bookPerPage,
+  const bookPerPage = 9;
+  const { data, isLoading,isFetching } = useGetProductsQuery({
+    page: currentPage,
+    limit: bookPerPage,
   search,
   condition: selectedCondition,
   classType: selectedType,

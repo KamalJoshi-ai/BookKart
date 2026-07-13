@@ -18,9 +18,13 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
       refetchOnMountOrArgChange: false,
     });
 
-  const publicRoutes = ['/reset-password', '/login', '/signup', '/forgot-password'];
-  const isPublicRoute = publicRoutes.some(route => pathname?.startsWith(route));
+  const protectedRoutes = ['/checkout', '/account', '/seller', '/book-sell'];
+  const isProtectedRoute = protectedRoutes.some(route => pathname?.startsWith(route));
+
   useEffect(() => {
+    const publicRoutes = ['/reset-password', '/login', '/signup', '/forgot-password'];
+    const isPublicRoute = publicRoutes.some(route => pathname?.startsWith(route));
+
     // Skip auth check for public routes
     if (isPublicRoute) {
       setIsCheckingAuth(false);
@@ -31,17 +35,16 @@ export default function AuthCheck({ children }: { children: React.ReactNode }) {
     if (data) {
       dispatch(setUser(data?.data?.user));
       dispatch(setEmailVerified(data?.data?.user?.isVerified));
-     dispatch(authStatus());
+      dispatch(authStatus(true));
     } else if (error) {
-
       dispatch(logout());
     }
 
     setIsCheckingAuth(false);
-  }, [ data, error, isPublicRoute, dispatch]);
+  }, [ data, error, pathname, dispatch]);
 
-  // Show loader while checking auth
-  if (isCheckingAuth || isLoading) {
+  // Show loader while checking auth only on protected routes
+  if (isProtectedRoute && (isCheckingAuth || isLoading)) {
     return <BookLoader />;
   }
 

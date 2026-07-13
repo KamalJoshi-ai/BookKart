@@ -21,6 +21,7 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<any>) => {
       state.user = action.payload;
+      state.isLoggedIn = !!action.payload;
     },
     closeLoginDialog: (state) => {
       state.isLoginDialogOpen = false;
@@ -32,8 +33,12 @@ const userSlice = createSlice({
     toggleLoginDialog: (state) => {
       state.isLoginDialogOpen = !state.isLoginDialogOpen;
     },
-    authStatus: (state) => {
-      state.isLoggedIn = !state.isLoggedIn;
+    authStatus: (state, action: PayloadAction<boolean | undefined>) => {
+      if (action.payload !== undefined) {
+        state.isLoggedIn = action.payload;
+      } else {
+        state.isLoggedIn = !!state.user;
+      }
     },
   },
 });
