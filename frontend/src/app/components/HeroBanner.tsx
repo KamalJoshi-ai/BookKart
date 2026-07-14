@@ -47,7 +47,7 @@ export default function HeroBanner() {
         >
           <Image
             src={src}
-            alt={`Banner Image ${index + 1}`}
+            alt=" "
             fill
             style={{ objectFit: "cover" }}
             priority={index === 0}
