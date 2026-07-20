@@ -1,216 +1,145 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { Leaf, Droplet, Coins, ArrowRight, Sparkles, BookOpen } from "lucide-react";
+import { Coins, Leaf, Droplet, ArrowRight, ShieldCheck, TrendingUp } from "lucide-react";
 
 export default function ImpactEstimator() {
   const [originalPrice, setOriginalPrice] = useState<number>(500);
-  const [condition, setCondition] = useState<string>("good");
-  const [genre, setGenre] = useState<string>("fiction");
+  const [condition, setCondition] = useState<string>("likenew");
 
-  // resale percentage based on condition
   const getResaleMultiplier = (cond: string) => {
     switch (cond) {
-      case "likenew":
-        return 0.7;
-      case "verygood":
-        return 0.55;
-      case "good":
-        return 0.4;
-      case "fair":
-        return 0.25;
-      default:
-        return 0.4;
+      case "likenew": return 0.70;
+      case "verygood": return 0.55;
+      case "good": return 0.40;
+      default: return 0.25;
     }
   };
 
   const resalePrice = Math.round(originalPrice * getResaleMultiplier(condition));
-  
-  // environmental impact metrics per book
-  const co2Prevented = 2.7; // kg CO2
-  const waterSaved = 1200; // liters of water
-  const treesSaved = 0.04; // fraction of a tree
+  const waterSaved = Math.round(originalPrice * 2.2);
 
   return (
-    <section className="py-14 bg-white border-t border-b border-slate-100 px-6">
-      <div className="max-w-5xl mx-auto">
+    <div className="max-w-7xl mx-auto my-6 px-2 sm:px-4">
+      <div className="bg-white border border-gray-200 shadow-xs rounded-sm p-6 space-y-6">
         
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-1.5 bg-blue-50 text-blue-600 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
-            Interactive Tool
+        <div className="border-b border-gray-100 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 bg-blue-50 text-[#2874f0] text-xs font-bold px-3 py-1 rounded-full mb-1">
+              <TrendingUp className="w-3.5 h-3.5" /> BookKart Resale Calculator
+            </div>
+            <h2 className="text-xl font-black text-gray-900">Estimate Resale Cash & Eco Savings</h2>
+            <p className="text-xs text-gray-500">Calculate how much money you earn by selling your used books on BookKart</p>
           </div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-3">
-            Estimate Your Resale Value & Green Impact
-          </h2>
-          <p className="text-slate-500 text-sm leading-relaxed">
-            See how much cash you can make by selling your old books, and see the environmental footprint you save!
-          </p>
+
+          <Link href="/book-sell">
+            <button className="bg-[#fb641b] text-white font-bold text-xs px-6 py-2.5 rounded-xs shadow-xs hover:bg-[#e5560f] transition cursor-pointer flex items-center gap-1">
+              SELL NOW <ArrowRight className="w-4 h-4" />
+            </button>
+          </Link>
         </div>
 
-        {/* Dynamic Widget Grid */}
-        <div className="grid md:grid-cols-12 gap-8 items-stretch">
+        {/* Calculation Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           
-          {/* Inputs Section */}
-          <div className="md:col-span-6 bg-slate-50 border border-slate-200/60 rounded-3xl p-6 md:p-8 flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-blue-600" />
-                Book Details
-              </h3>
-
-              {/* Slider for Original Price */}
-              <div className="mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-semibold text-slate-600">Original Price (MRP)</label>
-                  <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full">
-                    ₹{originalPrice}
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min="100"
-                  max="2000"
-                  step="50"
-                  value={originalPrice}
-                  onChange={(e) => setOriginalPrice(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-                />
-                <div className="flex justify-between text-xs text-slate-400 mt-1">
-                  <span>₹100</span>
-                  <span>₹2000</span>
-                </div>
+          {/* Controls */}
+          <div className="lg:col-span-6 space-y-5 p-5 bg-gray-50 rounded-sm border border-gray-200">
+            <div className="space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-semibold text-gray-700">Original Book Price (MRP)</span>
+                <span className="font-extrabold text-[#2874f0] bg-white border border-blue-200 px-3 py-1 rounded-xs">
+                  ₹{originalPrice}
+                </span>
               </div>
-
-              {/* Condition Selection */}
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-slate-600 mb-2">Book Condition</label>
-                <div className="grid grid-cols-2 gap-2.5">
-                  {[
-                    { id: "likenew", label: "Like New", desc: "No wear or marks" },
-                    { id: "verygood", label: "Very Good", desc: "Minor cover creases" },
-                    { id: "good", label: "Good", desc: "Read but intact" },
-                    { id: "fair", label: "Fair", desc: "Heavy shelf wear" },
-                  ].map((item) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => setCondition(item.id)}
-                      className={`text-left p-3 rounded-2xl border transition-all duration-200 ${
-                        condition === item.id
-                          ? "bg-blue-600 border-blue-600 text-white shadow-sm shadow-blue-500/10"
-                          : "bg-white border-slate-200 hover:border-slate-300 text-slate-700"
-                      }`}
-                    >
-                      <div className="text-xs font-bold">{item.label}</div>
-                      <div className={`text-[10px] ${condition === item.id ? "text-blue-100" : "text-slate-400"} mt-0.5`}>
-                        {item.desc}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Genre Selector */}
-              <div>
-                <label className="block text-sm font-semibold text-slate-600 mb-2">Book Genre</label>
-                <select
-                  value={genre}
-                  onChange={(e) => setGenre(e.target.value)}
-                  className="w-full bg-white border border-slate-200 text-slate-700 text-sm font-medium rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer"
-                >
-                  <option value="fiction">Fiction & Literature</option>
-                  <option value="tech">Science, Tech & Coding</option>
-                  <option value="business">Business & Finance</option>
-                  <option value="exam">Academic & Competitive Exams</option>
-                  <option value="children">Children & Comics</option>
-                </select>
+              <input 
+                type="range"
+                min="100"
+                max="2500"
+                step="50"
+                value={originalPrice}
+                onChange={(e) => setOriginalPrice(Number(e.target.value))}
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#2874f0]"
+              />
+              <div className="flex justify-between text-[10px] text-gray-400 font-mono">
+                <span>₹100</span>
+                <span>₹2,500</span>
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-slate-200/60">
-              <Link href="/book-sell" className="group flex items-center justify-between bg-slate-900 hover:bg-blue-600 text-white font-bold px-5 py-3.5 rounded-2xl transition-all duration-200">
-                <span className="text-sm">List your book in seconds</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-gray-700">Book Condition</label>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { id: "likenew", label: "Like New", desc: "No markings" },
+                  { id: "verygood", label: "Very Good", desc: "Minor cover creases" },
+                  { id: "good", label: "Good", desc: "Read but intact" },
+                  { id: "fair", label: "Fair", desc: "Heavy wear" }
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setCondition(item.id)}
+                    className={`p-2.5 rounded-xs text-left border text-xs transition ${
+                      condition === item.id 
+                        ? "bg-blue-50 border-[#2874f0] text-[#2874f0] font-bold" 
+                        : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    <div>{item.label}</div>
+                    <div className="text-[10px] text-gray-400 font-normal">{item.desc}</div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Outputs/Impact Section */}
-          <div className="md:col-span-6 flex flex-col gap-4">
+          {/* Results Display */}
+          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             
-            {/* Value Card */}
-            <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 md:p-8 text-white flex flex-col justify-between relative overflow-hidden shadow-lg shadow-blue-500/10">
-              {/* background design circle */}
-              <div className="absolute -top-12 -right-12 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-              
+            {/* Payout Card */}
+            <div className="p-5 bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-sm shadow-xs flex flex-col justify-between">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full text-blue-50">
-                  Est. Payout
+                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-white/20 px-2.5 py-1 rounded-2xs">
+                  Instant UPI Payout
                 </span>
-                <div className="mt-6 flex items-baseline gap-2">
-                  <span className="text-5xl font-black tracking-tight">₹{resalePrice}</span>
-                  <span className="text-blue-100 text-sm font-semibold">to ₹{Math.round(resalePrice * 1.25)}</span>
+                <div className="mt-4 flex items-baseline gap-1">
+                  <span className="text-4xl font-black">₹{resalePrice}</span>
+                  <span className="text-blue-100 text-xs font-semibold">to ₹{Math.round(resalePrice * 1.2)}</span>
                 </div>
-                <p className="text-blue-100 text-xs mt-3 leading-relaxed max-w-sm">
-                  Estimate calculated for a used {genre} book in {condition === "likenew" ? "like new" : condition} condition. Prices vary based on demand.
+                <p className="text-[11px] text-blue-100 mt-2">
+                  Direct transfer into your UPI/Bank account once buyer receives the order.
                 </p>
               </div>
 
-              <div className="mt-8 flex items-center gap-3 bg-white/10 rounded-2xl p-4">
-                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                  <Coins className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-white">Direct Transfer</div>
-                  <div className="text-[10px] text-blue-100">UPI/Bank Transfer once sold.</div>
-                </div>
+              <div className="mt-4 pt-3 border-t border-white/20 flex items-center gap-2 text-xs text-white">
+                <Coins className="w-4 h-4 text-yellow-300" />
+                <span className="font-bold">Zero Listing Fee</span>
               </div>
             </div>
 
-            {/* Environmental Impact Card */}
-            <div className="bg-emerald-50 border border-emerald-100 rounded-3xl p-6 md:p-8 flex flex-col justify-between">
+            {/* Eco Savings Card */}
+            <div className="p-5 bg-emerald-50 border border-emerald-200 rounded-sm text-emerald-900 flex flex-col justify-between">
               <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-sm font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1.5">
-                    <Leaf className="w-4 h-4 text-emerald-600" />
-                    Ecological Footprint Prevented
-                  </h3>
-                  <span className="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md">
-                    Green Factor
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  {/* Water Saved */}
-                  <div className="bg-white border border-emerald-100 rounded-2xl p-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-cyan-50 flex items-center justify-center shrink-0">
-                      <Droplet className="w-5 h-5 text-cyan-500" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-black text-slate-800 leading-none">{waterSaved}L</div>
-                      <div className="text-[10px] text-slate-400 mt-1">Water Saved</div>
-                    </div>
+                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-2xs">
+                  Green Footprint Saved
+                </span>
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Droplet className="w-5 h-5 text-cyan-600" />
+                    <span className="text-2xl font-black text-gray-900">{waterSaved} Liters</span>
                   </div>
-
-                  {/* CO2 Saved */}
-                  <div className="bg-white border border-emerald-100 rounded-2xl p-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
-                      <Leaf className="w-5 h-5 text-emerald-500" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-black text-slate-800 leading-none">{co2Prevented}kg</div>
-                      <div className="text-[10px] text-slate-400 mt-1">CO₂ Prevented</div>
-                    </div>
-                  </div>
+                  <p className="text-[11px] text-gray-600">
+                    Water saved in print production by reselling 1 book.
+                  </p>
                 </div>
               </div>
 
-              <p className="text-[11px] text-emerald-700 leading-relaxed mt-5">
-                🌳 Saving 1 book stops <strong>{co2Prevented} kg of carbon</strong> emissions and saves <strong>{waterSaved} liters of water</strong> used in print paper production. By reselling, you prevent new book production footprints!
-              </p>
+              <div className="mt-4 pt-3 border-t border-emerald-200 flex items-center gap-2 text-xs text-emerald-800 font-bold">
+                <Leaf className="w-4 h-4 text-emerald-600" />
+                <span>100% Sustainable Re-commerce</span>
+              </div>
             </div>
 
           </div>
@@ -218,6 +147,6 @@ export default function ImpactEstimator() {
         </div>
 
       </div>
-    </section>
+    </div>
   );
 }

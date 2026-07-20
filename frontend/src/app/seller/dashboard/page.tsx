@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { useGetSellerStatsQuery } from "@/store/api";
 import { BookOpen, ShoppingBag, IndianRupee, LayoutDashboard } from "lucide-react";
 import InfiniteSkeleton from "../earnings/infinteskeleton";
@@ -9,41 +10,37 @@ const statCards = [
     label: "Total Books",
     key: "totalBooks",
     icon: BookOpen,
-    color: "from-green-500 to-emerald-500",
-    bg: "bg-green-50",
-    iconColor: "text-green-600",
+    bg: "bg-emerald-50 text-emerald-600 border-emerald-100",
+    valColor: "text-emerald-600",
   },
   {
     label: "Total Orders",
     key: "totalOrders",
     icon: ShoppingBag,
-    color: "from-orange-500 to-amber-500",
-    bg: "bg-orange-50",
-    iconColor: "text-orange-600",
+    bg: "bg-amber-50 text-amber-600 border-amber-100",
+    valColor: "text-amber-600",
   },
   {
     label: "Total Earnings",
     key: "totalEarnings",
     icon: IndianRupee,
-    color: "from-violet-500 to-purple-600",
-    bg: "bg-violet-50",
-    iconColor: "text-violet-600",
+    bg: "bg-[#2874f0]/10 text-[#2874f0] border-blue-100",
+    valColor: "text-[#2874f0]",
     prefix: "₹",
   },
   {
     label: "Active Listings",
     key: "activeListings",
     icon: LayoutDashboard,
-    color: "from-pink-500 to-rose-500",
-    bg: "bg-pink-50",
-    iconColor: "text-pink-600",
+    bg: "bg-purple-50 text-purple-600 border-purple-100",
+    valColor: "text-purple-600",
   },
 ];
 
 const orderStatCards = [
-  { label: "Pending", key: "pendingOrders", color: "text-orange-500" },
-  { label: "Shipped", key: "shippedOrders", color: "text-blue-500" },
-  { label: "Delivered", key: "deliveredOrders", color: "text-green-500" },
+  { label: "Pending", key: "pendingOrders", color: "text-amber-600 bg-amber-50 border-amber-200" },
+  { label: "Shipped", key: "shippedOrders", color: "text-blue-600 bg-blue-50 border-blue-200" },
+  { label: "Delivered", key: "deliveredOrders", color: "text-emerald-600 bg-emerald-50 border-emerald-200" },
 ];
 
 export default function SellerDashboard() {
@@ -51,40 +48,39 @@ export default function SellerDashboard() {
   const stats = data?.data;
 
   if (isLoading) {
-    return  <InfiniteSkeleton/>
-    
+    return <InfiniteSkeleton />;
   }
 
   if (isError) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <p className="text-red-500 text-sm">Failed to load stats. Please try again.</p>
+      <div className="bg-white border border-gray-200 rounded-xl p-12 text-center shadow-xs">
+        <p className="text-red-500 text-xs font-bold">Failed to load stats. Please try again.</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-6">
 
-      {/* Heading */}
-      <div>
-        <h1 className="text-2xl font-semibold text-gray-900">Overview</h1>
-        <p className="text-sm text-gray-500 mt-1">Your seller dashboard at a glance</p>
+      {/* Heading Header */}
+      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xs">
+        <h1 className="text-2xl font-black text-gray-900 tracking-tight">Overview</h1>
+        <p className="text-xs text-gray-500 mt-0.5">Your seller performance dashboard and store analytics</p>
       </div>
 
-      {/* Main Stats */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-        {statCards.map(({ label, key, icon: Icon, bg, iconColor, prefix }) => (
+      {/* Stat Cards Grid matching Image 2 */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {statCards.map(({ label, key, icon: Icon, bg, valColor, prefix }) => (
           <div
             key={key}
-            className="bg-white border border-gray-100 rounded-xl p-4 flex items-center gap-4 shadow-sm"
+            className="bg-white border border-gray-200 rounded-xl p-5 flex items-center gap-4 shadow-xs"
           >
-            <div className={`${bg} p-3 rounded-lg`}>
-              <Icon className={`w-5 h-5 ${iconColor}`} />
+            <div className={`w-12 h-12 rounded-lg ${bg} border flex items-center justify-center shrink-0`}>
+              <Icon className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">{label}</p>
-              <p className="text-xl font-semibold text-gray-900">
+              <p className="text-xs text-gray-500 font-semibold">{label}</p>
+              <p className={`text-2xl font-black ${valColor} mt-0.5`}>
                 {prefix ?? ""}{stats?.[key] ?? 0}
               </p>
             </div>
@@ -92,16 +88,20 @@ export default function SellerDashboard() {
         ))}
       </div>
 
-      {/* Order Breakdown */}
-      <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm">
-        <h2 className="text-base font-medium text-gray-900 mb-4">Order Breakdown</h2>
+      {/* Order Breakdown Card */}
+      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-xs space-y-4">
+        <h2 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-3">Order Breakdown</h2>
+        
         <div className="grid grid-cols-3 gap-4">
           {orderStatCards.map(({ label, key, color }) => (
-            <div key={key} className="flex flex-col items-center justify-center bg-gray-50 rounded-lg p-4">
-              <p className={`text-2xl font-semibold ${color}`}>
+            <div 
+              key={key} 
+              className={`flex flex-col items-center justify-center p-5 rounded-lg border text-center ${color}`}
+            >
+              <p className="text-3xl font-black">
                 {stats?.[key] ?? 0}
               </p>
-              <p className="text-xs text-gray-500 mt-1">{label}</p>
+              <p className="text-xs font-bold uppercase tracking-wider mt-1">{label}</p>
             </div>
           ))}
         </div>
